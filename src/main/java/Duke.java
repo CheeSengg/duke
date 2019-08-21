@@ -12,8 +12,8 @@ public class Duke {
 //                + "|____/ \\__,_|_|\\_\\___|\n";
 //        System.out.println("Hello from\n" + logo);
 //        levelOne();
-        levelTwo();
-
+//        levelTwo();
+        levelThree();
     }
 
     private static void dukeGreet(){
@@ -57,16 +57,16 @@ public class Duke {
         scanner.close();
     }
 
-    private static void dukeListTask(ArrayList<String> task){
+    private static void dukeListTask(ArrayList<String> tasks){
         System.out.print(SPACES);
-        for(int i = 0; i < task.size(); i++){
-            System.out.println("    " + (i+1) + ". " + task.get(i));
+        for(int i = 0; i < tasks.size(); i++){
+            System.out.println("    " + (i+1) + ". " + tasks.get(i));
         }
         System.out.println(SPACES);
     }
 
-    private static void dukeAddTask(String message, ArrayList<String> task){
-        task.add(message);
+    private static void dukeAddTask(String message, ArrayList<String> tasks){
+        tasks.add(message);
         System.out.println(SPACES + "    added: " + message + "\n" + SPACES);
     }
 
@@ -96,5 +96,67 @@ public class Duke {
 
         scanner.close();
 
+    }
+
+    private static void dukeListTaskThree(ArrayList<Task> tasks){
+        System.out.print(SPACES);
+        for(int i = 0; i < tasks.size(); i++){
+            System.out.println("    " + (i+1)
+                    + ".[" + tasks.get(i).getStatusIcon() + "] "
+                    + tasks.get(i).getDescription());
+        }
+        System.out.println(SPACES);
+    }
+
+    private static void dukeAddTaskThree(String message, ArrayList<Task> tasks){
+        Task task = new Task(message);
+        tasks.add(task);
+        System.out.println(SPACES + "    added: " + message + "\n" + SPACES);
+    }
+
+    private static void dukeSetDone(String message, ArrayList<Task> tasks){
+        final String DONE = "    Nice! I've marked this task as done:\n";
+
+        String[] arrStr = message.split(" ",2);
+        int taskNo = Integer.parseInt(arrStr[1]) - 1;
+
+        Task task = tasks.get(taskNo);
+        task.markAsDone();
+
+        System.out.println(SPACES + DONE
+                + "      [" + task.getStatusIcon() + "] " + task.getDescription() + "\n"
+                + SPACES);
+
+    }
+
+    private static void levelThree(){
+        ArrayList<Task> tasks = new ArrayList<>();
+        String message;
+        boolean end = false;
+
+        Scanner scanner = new Scanner(System.in);
+
+        dukeGreet();
+        while(!end){
+            message = scanner.nextLine();
+
+            switch (message.toLowerCase()){
+                case "bye":
+                    dukeBye();
+                    end = true;
+                    break;
+                case "list":
+                    dukeListTaskThree(tasks);
+                    break;
+                default:
+                    if(message.toLowerCase().contains("done")){
+                        dukeSetDone(message, tasks);
+                    } else {
+                        dukeAddTaskThree(message, tasks);
+                    }
+            }
+        }
+
+        scanner.close();
     }
 }
