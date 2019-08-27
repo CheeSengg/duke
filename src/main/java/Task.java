@@ -10,6 +10,10 @@ public class Task {
         isCompleted = true;
     }
 
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
     protected String getStatusIcon(){
         return (isCompleted ? "\u2713" : "\u2718");
     }

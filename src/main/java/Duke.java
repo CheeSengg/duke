@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -5,6 +6,9 @@ public class Duke {
     private static final String SPACES = "   __________________________________\n";
 
     public static void main(String[] args) {
+        ArrayList<Task> tasks = new ArrayList<>();
+        dukeLoadFile(tasks);
+
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -12,7 +16,54 @@ public class Duke {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
 
-        dukeInit();
+        dukeInit(tasks);
+    }
+
+    private static void dukeLoadFile(ArrayList<Task> tasks){
+        try {
+            File currentDir = new File(System.getProperty("user.dir"));
+            File loadFile = new File(currentDir.toString() + "\\src\\main\\data\\duke.txt");
+
+            loadFile.getParentFile().mkdirs();
+            loadFile.createNewFile();
+
+            BufferedReader br = new BufferedReader(new FileReader(loadFile));
+
+            String message;
+
+            while((message = br.readLine()) != null){
+                String[] arrStr = message.split(" ", 2);
+                String[] splitStr;
+                if(arrStr[0].toLowerCase().equals("todo")){
+                    tasks.add(new Todo(arrStr[1]));
+                } else if(arrStr[0].toLowerCase().equals("deadline")){
+                    splitStr = arrStr[1].split("/by ", 2);
+                    tasks.add(new Deadline(splitStr[0], splitStr[1]));
+                } else if(arrStr[0].toLowerCase().equals("event")){
+                    splitStr = arrStr[1].split("/at ", 2);
+                    tasks.add(new Event(splitStr[0], splitStr[1]));
+                } else if(arrStr[0].toLowerCase().equals("done")){
+                    int taskNo = Integer.parseInt(arrStr[1]);
+                    tasks.get(taskNo).markAsDone();
+                }
+            }
+
+        } catch (IOException e){
+            System.out.println(SPACES + "    ☹ OOPS!!! Unable to load file.\n" + SPACES);
+        }
+    }
+
+    private static void dukeWriteFile(String message){
+        try {
+            File currentDir = new File(System.getProperty("user.dir"));
+            File writeFile = new File(currentDir.toString() + "\\src\\main\\data\\duke.txt");
+            FileWriter wr = new FileWriter(writeFile, true);
+                        wr.write(message + "\n" );
+            wr.close();
+
+        } catch (IOException e){
+            System.out.println(SPACES + "    ☹ OOPS!!! File does not exist.\n" + SPACES);
+        }
     }
 
     //Greetings by duke when it is booting up
@@ -52,11 +103,9 @@ public class Duke {
         String[] splitStr;
 
         try {
-
             if(arrStr.length == 1 || arrStr[1].isEmpty())
                 throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
                         "    Please try again. \n" + SPACES);
-            System.out.println(arrStr[1]);
             switch (arrStr[0].toLowerCase()) {
                 case "todo":
                     task = new Todo(arrStr[1]);
@@ -65,20 +114,22 @@ public class Duke {
                     if(!message.contains("/by"))
                         throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the deadline.\n" +
                                 "    Please try again. \n" + SPACES);
-                    splitStr = arrStr[1].split("/by", 2);
+                    splitStr = arrStr[1].split("/by ", 2);
                     task = new Deadline(splitStr[0], splitStr[1]);
                     break;
                 case "event":
                     if(!message.contains("/at"))
                         throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the deadline.\n" +
                                 "    Please try again. \n" + SPACES);
-                    splitStr = arrStr[1].split("/at", 2);
+                    splitStr = arrStr[1].split("/at ", 2);
                     task = new Event(splitStr[0], splitStr[1]);
                     break;
                 default:
                     throw new DukeException(SPACES + "    ☹ OOPS!!! You did not specify the type of task.\n" +
                             "    Please key in the task then description. \n" + SPACES);
             }
+
+            dukeWriteFile(message);
 
             tasks.add(task);
             System.out.println(SPACES + "    Got it. I've added this task:\n"
@@ -108,7 +159,13 @@ public class Duke {
                         "    To mark as done please key in a valid task number. \n" + SPACES);
 
             Task task = tasks.get(taskNo);
+
+            if(task.isCompleted()) {
+                throw new DukeException(SPACES + "    ☹ OOPS!!! This task has already been completed\n" + SPACES);
+            }
+
             task.markAsDone();
+            dukeWriteFile(message);
 
             System.out.println(SPACES + DONE + "      " + task.toString() + "\n" + SPACES);
 
@@ -121,8 +178,7 @@ public class Duke {
     }
 
     //start up duke
-    private static void dukeInit(){
-        ArrayList<Task> tasks = new ArrayList<>();
+    private static void dukeInit(ArrayList<Task> tasks){
         String message;
         boolean end = false;
 
