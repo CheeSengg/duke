@@ -43,7 +43,7 @@ public class Duke {
                     splitStr = arrStr[1].split("/at ", 2);
                     tasks.add(new Event(splitStr[0], splitStr[1]));
                 } else if(arrStr[0].toLowerCase().equals("done")){
-                    int taskNo = Integer.parseInt(arrStr[1]);
+                    int taskNo = Integer.parseInt(arrStr[1]) - 1;
                     tasks.get(taskNo).markAsDone();
                 }
             }
@@ -58,7 +58,8 @@ public class Duke {
             File currentDir = new File(System.getProperty("user.dir"));
             File writeFile = new File(currentDir.toString() + "\\src\\main\\data\\duke.txt");
             FileWriter wr = new FileWriter(writeFile, true);
-                        wr.write(message + "\n" );
+
+            wr.write(message + "\n" );
             wr.close();
 
         } catch (IOException e){
@@ -111,15 +112,16 @@ public class Duke {
                     task = new Todo(arrStr[1]);
                     break;
                 case "deadline":
-                    if(!message.contains("/by"))
+                    if(!message.contains("/by "))
                         throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the deadline.\n" +
                                 "    Please try again. \n" + SPACES);
                     splitStr = arrStr[1].split("/by ", 2);
+
                     task = new Deadline(splitStr[0], splitStr[1]);
                     break;
                 case "event":
-                    if(!message.contains("/at"))
-                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the deadline.\n" +
+                    if(!message.contains("/at "))
+                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the event time.\n" +
                                 "    Please try again. \n" + SPACES);
                     splitStr = arrStr[1].split("/at ", 2);
                     task = new Event(splitStr[0], splitStr[1]);
