@@ -23,7 +23,7 @@ public class Duke {
         try {
             File currentDir = new File(System.getProperty("user.dir"));
             File loadFile = new File(currentDir.toString() + "\\src\\main\\data\\duke.txt");
-
+            DateFormatter dateFormatter;
             loadFile.getParentFile().mkdirs();
             loadFile.createNewFile();
 
@@ -38,10 +38,12 @@ public class Duke {
                     tasks.add(new Todo(arrStr[1]));
                 } else if(arrStr[0].toLowerCase().equals("deadline")){
                     splitStr = arrStr[1].split("/by ", 2);
-                    tasks.add(new Deadline(splitStr[0], splitStr[1]));
+                    dateFormatter = new DateFormatter(splitStr[1]);
+                    tasks.add(new Deadline(splitStr[0], dateFormatter.getDate() + dateFormatter.getTime()));
                 } else if(arrStr[0].toLowerCase().equals("event")){
                     splitStr = arrStr[1].split("/at ", 2);
-                    tasks.add(new Event(splitStr[0], splitStr[1]));
+                    dateFormatter = new DateFormatter(splitStr[1]);
+                    tasks.add(new Event(splitStr[0], dateFormatter.getDate() + dateFormatter.getTime()));
                 } else if(arrStr[0].toLowerCase().equals("done")){
                     int taskNo = Integer.parseInt(arrStr[1]) - 1;
                     tasks.get(taskNo).markAsDone();
@@ -102,6 +104,7 @@ public class Duke {
         Task task;
         String[] arrStr = message.split(" ", 2);
         String[] splitStr;
+        DateFormatter dateFormatter;
 
         try {
             if(arrStr.length == 1 || arrStr[1].isEmpty())
@@ -116,15 +119,24 @@ public class Duke {
                         throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the deadline.\n" +
                                 "    Please try again. \n" + SPACES);
                     splitStr = arrStr[1].split("/by ", 2);
+                    dateFormatter = new DateFormatter(splitStr[1]);
+                    if(!dateFormatter.isValidDateTime())
+                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key a valid deadline.\n" +
+                                "    Please try again. \n" + SPACES);
 
-                    task = new Deadline(splitStr[0], splitStr[1]);
+                    task = new Deadline(splitStr[0], dateFormatter.getDate() + dateFormatter.getTime());
                     break;
                 case "event":
                     if(!message.contains("/at "))
                         throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the event time.\n" +
                                 "    Please try again. \n" + SPACES);
                     splitStr = arrStr[1].split("/at ", 2);
-                    task = new Event(splitStr[0], splitStr[1]);
+                    dateFormatter = new DateFormatter(splitStr[1]);
+                    if(!dateFormatter.isValidDateTime())
+                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in a valid event time.\n" +
+                                "    Please try again. \n" + SPACES);
+
+                    task = new Event(splitStr[0], dateFormatter.getDate() + dateFormatter.getTime());
                     break;
                 default:
                     throw new DukeException(SPACES + "    ☹ OOPS!!! You did not specify the type of task.\n" +
