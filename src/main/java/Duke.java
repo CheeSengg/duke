@@ -191,6 +191,35 @@ public class Duke {
         }
     }
 
+    private static void dukeDeleteTask(String message, ArrayList<Task> tasks){
+        final String DELETE = "    Noted. I've removed this task:\n";
+        int taskNo;
+        String[] arrStr = message.split(" ");
+
+        try{
+            if (arrStr.length == 1)
+                throw new DukeException(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
+                        "    To mark as done please key in a task number. \n" + SPACES);
+            taskNo = Integer.parseInt(arrStr[1]) - 1;
+
+            if(tasks.size() <= taskNo)
+                throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid task number.\n" +
+                        "    To mark as done please key in a valid task number. \n" + SPACES);
+
+            dukeWriteFile(message);
+
+            System.out.println(SPACES + DELETE + "      " + tasks.get(taskNo).toString() + "\n" + SPACES);
+
+            tasks.remove(taskNo);
+
+        } catch (NumberFormatException e){
+            System.out.println(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
+                    "    To mark as done please key in a valid task number. \n" + SPACES);
+        } catch (DukeException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     //start up duke
     private static void dukeInit(ArrayList<Task> tasks){
         String message;
@@ -213,6 +242,9 @@ public class Duke {
                     break;
                 case "done":
                     dukeSetDone(message, tasks);
+                    break;
+                case "delete":
+                    dukeDeleteTask(message,tasks);
                     break;
                 default:
                     dukeAddTask(message,tasks);
