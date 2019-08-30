@@ -191,6 +191,40 @@ public class Duke {
         }
     }
 
+    private static void dukeFind(String message, ArrayList<Task> tasks) {
+        final String FIND = "    Here are the matching tasks in your list:\n";
+        ArrayList<Task> searchResult = new ArrayList<>();
+        String[] arrStr = message.split(" ", 2);
+
+        try {
+            if(arrStr.length == 1 || arrStr[1].isEmpty())
+                throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
+                        "    Please try again. \n" + SPACES);
+
+            for (Task i : tasks) {
+                if(i.getDescription().toLowerCase().contains(arrStr[1].toLowerCase())){
+                    searchResult.add(i);
+                }
+            }
+
+            if(searchResult.size() > 0){
+                System.out.print(SPACES + FIND);
+                int counter = 1;
+                for (Task i : searchResult) {
+                    System.out.println("    " + counter + "." + i.toString());
+                    counter++;
+                }
+                System.out.println(SPACES);
+            } else {
+                System.out.println(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
+                        "    Please try again. \n" + SPACES);
+            }
+
+        } catch (DukeException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     //start up duke
     private static void dukeInit(ArrayList<Task> tasks){
         String message;
@@ -213,6 +247,9 @@ public class Duke {
                     break;
                 case "done":
                     dukeSetDone(message, tasks);
+                    break;
+                case "find":
+                    dukeFind(message, tasks);
                     break;
                 default:
                     dukeAddTask(message,tasks);
