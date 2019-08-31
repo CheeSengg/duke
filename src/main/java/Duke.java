@@ -194,18 +194,18 @@ public class Duke {
         }
     }
 
-    private static void dukeDeleteTask(String message, ArrayList<Task> tasks){
+    private static void dukeDeleteTask(String message, ArrayList<Task> tasks) {
         final String DELETE = "    Noted. I've removed this task:\n";
         int taskNo;
         String[] arrStr = message.split(" ");
 
-        try{
+        try {
             if (arrStr.length == 1)
                 throw new DukeException(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
                         "    To mark as done please key in a task number. \n" + SPACES);
             taskNo = Integer.parseInt(arrStr[1]) - 1;
 
-            if(tasks.size() <= taskNo)
+            if (tasks.size() <= taskNo)
                 throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid task number.\n" +
                         "    To mark as done please key in a valid task number. \n" + SPACES);
 
@@ -215,9 +215,44 @@ public class Duke {
 
             tasks.remove(taskNo);
 
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
                     "    To mark as done please key in a valid task number. \n" + SPACES);
+        } catch (DukeException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void dukeFind(String message, ArrayList<Task> tasks) {
+        final String FIND = "    Here are the matching tasks in your list:\n";
+        ArrayList<Task> searchResult = new ArrayList<>();
+        String[] arrStr = message.split(" ", 2);
+
+        try {
+            if(arrStr.length == 1 || arrStr[1].isEmpty())
+                throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
+                        "    Please try again. \n" + SPACES);
+
+            for (Task i : tasks) {
+                if(i.getDescription().toLowerCase().contains(arrStr[1].toLowerCase())){
+                    searchResult.add(i);
+                }
+            }
+
+            if(searchResult.size() > 0){
+                System.out.print(SPACES + FIND);
+                int counter = 1;
+                for (Task i : searchResult) {
+                    System.out.println("    " + counter + "." + i.toString());
+                    counter++;
+                }
+                System.out.println(SPACES);
+            } else {
+                System.out.println(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
+                        "    Please try again. \n" + SPACES);
+            }
+
+
         } catch (DukeException e){
             System.out.println(e.getMessage());
         }
@@ -248,6 +283,8 @@ public class Duke {
                     break;
                 case "delete":
                     dukeDeleteTask(message,tasks);
+                case "find":
+                    dukeFind(message, tasks);
                     break;
                 default:
                     dukeAddTask(message,tasks);

@@ -16,6 +16,10 @@ public abstract class Task {
         return isCompleted;
     }
 
+    public String getDescription(){
+        return description;
+    }
+
     protected String getStatusIcon(){
         return (isCompleted ? "\u2713" : "\u2718");
     }
