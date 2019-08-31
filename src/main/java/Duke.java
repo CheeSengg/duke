@@ -1,3 +1,6 @@
+import Duke.Task.*;
+import Duke.Exception.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -218,7 +221,6 @@ public class Duke {
                     dukeAddTask(message,tasks);
             }
         }
-
         scanner.close();
     }
 }

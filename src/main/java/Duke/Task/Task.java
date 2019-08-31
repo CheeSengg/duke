@@ -1,5 +1,7 @@
-public class Task {
-    private String description;
+package Duke.Task;
+
+public abstract class Task {
+    protected String description;
     private boolean isCompleted = false;
 
     public Task(String description) {

@@ -1,6 +1,9 @@
-public class Todo extends Task{
+package Duke.Task;
+
+public class Todo extends Task {
     final String SYMBOL = "[T]";
-    Todo(String description){
+
+    public Todo(String description){
         super(description);
     }
 

@@ -1,8 +1,10 @@
-public class Event extends Task{
+package Duke.Task;
+
+public class Event extends Task {
     final String SYMBOL = "[E]";
     protected String date;
 
-    Event(String description, String date){
+    public Event(String description, String date){
         super(description);
         this.date = date;
     }
