@@ -10,7 +10,6 @@ public class TaskList extends ArrayList<Task> {
      * @return The task with index starting from 0
      */
     public Task getTask(int index){
-
         return this.get(index - 1);
     }
 
@@ -34,5 +33,20 @@ public class TaskList extends ArrayList<Task> {
         refTask.markAsDone();
 
         return refTask;
+    }
+
+    /**
+     * Finds all the task that contains the String and append task to new arraylist
+     * @param item String that contains the item user wants to find
+     * @return New ArrayList with task that contains the String user input
+     */
+    public ArrayList<Task> findTask(String item){
+        ArrayList<Task> foundTask = new ArrayList<>();
+        for(Task i : this){
+            if(i.getDescription().contains("item"))
+                foundTask.add(i);
+        }
+
+        return foundTask;
     }
 }

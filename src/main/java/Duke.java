@@ -87,11 +87,6 @@ public class Duke {
         System.out.println(SPACES + bye + SPACES);
     }
 
-    //For Level-1 to repeat what user input
-    private static void dukeEcho(String message) {
-        System.out.println(SPACES + "    " + message + "\n" + SPACES);
-    }
-
     //List the task that were added into duke
     private static void dukeListTask(ArrayList<Task> tasks){
         System.out.print(SPACES);

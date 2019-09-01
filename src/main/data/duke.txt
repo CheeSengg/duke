@@ -1,0 +1,12 @@
+deadline return book /by 22/12/1997 1300
+event return shoes /at 29/2/2000 0000
+event birthday /at 13/2/1997 2300
+done 1
+deadline duke /by 11/8/1999 1215
+done 3
+delete 2
+delete 1
+todo duke
+done 2
+todo return
+done 6
