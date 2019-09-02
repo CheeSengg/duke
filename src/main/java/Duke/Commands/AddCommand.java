@@ -1,9 +1,8 @@
 package Duke.Commands;
 
-import Duke.Task.Deadline;
-import Duke.Task.Event;
-import Duke.Task.TaskList;
-import Duke.Task.Todo;
+import Duke.Constant.Duke_Response;
+import Duke.Task.*;
+import Duke.Ui;
 
 public class AddCommand extends Command {
     private String taskType;
@@ -11,7 +10,7 @@ public class AddCommand extends Command {
     private String dateTime;
 
     /**
-     * Constructer for ToDo task
+     * Constructor for ToDo task
      * There is no dateTime for this type of task
      * @param taskType The task type to be added
      * @param description The description of task
@@ -23,7 +22,7 @@ public class AddCommand extends Command {
     }
 
     /**
-     * Constructer for Event and Deadline Task
+     * Constructor for Event and Deadline Task
      * @param taskType The task type to be added
      * @param description The description of task
      * @param dateTime The date and time of task to either be completed or attend to
@@ -35,20 +34,31 @@ public class AddCommand extends Command {
     }
 
     /**
-     * To append the new task to the arraylist
-     * @param tasks the arraylist of task by user
+     * To append new task to the arraylist
+     * @param tasks The arraylist of task stored by Duke
+     * @param ui The user interface that handles messages
      */
     @Override
-    public void execute(TaskList tasks) {
+    public void execute(TaskList tasks, Ui ui) {
+        Task task;
         switch (taskType.toLowerCase()){
             case "todo":
-                tasks.add(new Todo(description));
+                task = new Todo(description);
+                tasks.add(task);
+                ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
+                        + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
                 break;
             case "event":
-                tasks.add(new Event(description, dateTime));
+                task = new Event(description, dateTime);
+                tasks.add(task);
+                ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
+                        + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
                 break;
             case "deadline":
-                tasks.add(new Deadline(description, dateTime));
+                task = new Deadline(description, dateTime);
+                tasks.add(task);
+                ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
+                        + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
                 break;
         }
     }

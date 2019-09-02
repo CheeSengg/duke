@@ -1,7 +1,9 @@
 package Duke.Commands;
 
+import Duke.Constant.Duke_Response;
 import Duke.Task.Task;
 import Duke.Task.TaskList;
+import Duke.Ui;
 
 public class DeleteCommand extends Command{
     private int index;
@@ -15,13 +17,20 @@ public class DeleteCommand extends Command{
     }
 
     /**
-     * Prints the task denoted by user to be deleted
-     * @param tasks ArrayList of task
+     * Delete the task that is input by user
+     * @param tasks The arraylist of task stored by Duke
+     * @param ui The user interface that handles messages
      */
     @Override
-    public void execute(TaskList tasks) {
-        Task task = tasks.deleteTask(index);
+    public void execute(TaskList tasks, Ui ui) {
+        String message;
+        if(tasks.size() >= index) {
+            Task task = tasks.deleteTask(index);
+            message = new Duke_Response().DELETE_FOUND + "      " + task.toString() + "\n";
+        } else{
+            message = new Duke_Response().NOT_FOUND;
+        }
 
-        System.out.println("      " + task.toString() + "\n");
+        ui.setMessage(message);
     }
 }

@@ -1,7 +1,9 @@
 package Duke.Commands;
 
+import Duke.Constant.Duke_Response;
 import Duke.Task.Task;
 import Duke.Task.TaskList;
+import Duke.Ui;
 
 import java.util.ArrayList;
 
@@ -17,21 +19,25 @@ public class FindCommand extends Command{
     }
 
     /**
-     * Print out all the task that contains the item String
-     * @param tasks ArrayList of task
+     * Finds all the tasks that contains the word that the user input
+     * @param tasks The arraylist of task stored by Duke
+     * @param ui The user interface that handles messages
      */
     @Override
-    public void execute(TaskList tasks) {
+    public void execute(TaskList tasks, Ui ui) {
         ArrayList<Task> foundTask = tasks.findTask(item);
+        String message = "";
 
         if(foundTask.isEmpty()){
-            System.out.println("      Sorry! The task that you are finding does not exist.\n");
+            message = new Duke_Response().NOT_FOUND;
         } else {
+            message = new Duke_Response().FIND_FOUND;
             int counter = 1;
             for(Task i : foundTask){
-                System.out.println("      " + counter + "." + i.toString() + "\n");
+                message += "      " + counter + "." + i.toString();
                 counter++;
             }
         }
+        ui.setMessage(message);
     }
 }
