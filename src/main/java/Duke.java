@@ -1,28 +1,50 @@
+import Duke.Commands.Command;
+import Duke.Constant.Duke_Response;
+import Duke.Exception.DukeException;
+import Duke.Parser.Parser;
 import Duke.Task.*;
-import Duke.Exception.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
-    private static final String SPACES = "   __________________________________\n";
+    private static TaskList tasks = new TaskList();
+    
 
     public static void main(String[] args) {
-        ArrayList<Task> tasks = new ArrayList<>();
-        dukeLoadFile(tasks);
+        dukeLoadFile();
 
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
 
-        dukeInit(tasks);
+
+        System.out.println("Hello from\n" + Duke_Response.LOGO);
+
+
+        run();
+//        dukeInit(tasks);
     }
 
-    private static void dukeLoadFile(ArrayList<Task> tasks){
+    public static void run() {
+        Scanner sc = new Scanner(System.in);
+
+        boolean isExit = false;
+        while (!isExit) {
+            try {
+                String fullCommand = sc.nextLine();
+                Command c = Parser.parse(fullCommand);
+                c.execute(tasks);
+                isExit = c.isExit();
+            } catch (DukeException e) {
+                System.out.println(e.getMessage());
+            } catch (NumberFormatException e){
+                System.out.println("Invalid Command");
+            }
+        }
+
+        sc.close();
+    }
+
+    private static void dukeLoadFile(){
         try {
             File currentDir = new File(System.getProperty("user.dir"));
             File loadFile = new File(currentDir.toString() + "\\src\\main\\data\\duke.txt");
@@ -54,7 +76,7 @@ public class Duke {
             }
 
         } catch (IOException e){
-            System.out.println(SPACES + "    ☹ OOPS!!! Unable to load file.\n" + SPACES);
+            System.out.println(Duke_Response.SPACES + "    ☹ OOPS!!! Unable to load file.\n" + Duke_Response.SPACES);
         }
     }
 
@@ -68,7 +90,7 @@ public class Duke {
             wr.close();
 
         } catch (IOException e){
-            System.out.println(SPACES + "    ☹ OOPS!!! File does not exist.\n" + SPACES);
+            System.out.println(Duke_Response.SPACES + "    ☹ OOPS!!! File does not exist.\n" + Duke_Response.SPACES);
         }
     }
 
@@ -77,24 +99,24 @@ public class Duke {
         final String greetings = "    Hello! I'm Duke\n"
                 + "    What can I do for you?\n";
 
-        System.out.println(SPACES + greetings + SPACES);
+        System.out.println(Duke_Response.SPACES + greetings + Duke_Response.SPACES);
     }
 
     //Goodbye by duke when invoked to shut down
     private static void dukeBye(){
         final String bye = "    Bye. Hope to see you again soon!\n";
 
-        System.out.println(SPACES + bye + SPACES);
+        System.out.println(Duke_Response.SPACES + bye + Duke_Response.SPACES);
     }
 
     //List the task that were added into duke
     private static void dukeListTask(ArrayList<Task> tasks){
-        System.out.print(SPACES);
+        System.out.print(Duke_Response.SPACES);
         System.out.println("    Here are the tasks in your list:");
         for(int i = 0; i < tasks.size(); i++){
             System.out.println("    " + (i+1) + "." + tasks.get(i).toString());
         }
-        System.out.println(SPACES);
+        System.out.println(Duke_Response.SPACES);
     }
 
     //Add Task to be stored in duke
@@ -106,48 +128,48 @@ public class Duke {
 
         try {
             if(arrStr.length == 1 || arrStr[1].isEmpty())
-                throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
-                        "    Please try again. \n" + SPACES);
+                throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
+                        "    Please try again. \n" + Duke_Response.SPACES);
             switch (arrStr[0].toLowerCase()) {
                 case "todo":
                     task = new Todo(arrStr[1]);
                     break;
                 case "deadline":
                     if(!message.contains("/by "))
-                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the deadline.\n" +
-                                "    Please try again. \n" + SPACES);
+                        throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! You did not key in the deadline.\n" +
+                                "    Please try again. \n" + Duke_Response.SPACES);
                     splitStr = arrStr[1].split("/by ", 2);
                     dateFormatter = new DateFormatter(splitStr[1]);
                     if(!dateFormatter.isValidDateTime())
-                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key a valid deadline.\n" +
-                                "    Please try again. \n" + SPACES);
+                        throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! You did not key a valid deadline.\n" +
+                                "    Please try again. \n" + Duke_Response.SPACES);
 
                     task = new Deadline(splitStr[0], dateFormatter.getDate() + dateFormatter.getTime());
                     break;
                 case "event":
                     if(!message.contains("/at "))
-                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in the event time.\n" +
-                                "    Please try again. \n" + SPACES);
+                        throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! You did not key in the event time.\n" +
+                                "    Please try again. \n" + Duke_Response.SPACES);
                     splitStr = arrStr[1].split("/at ", 2);
                     dateFormatter = new DateFormatter(splitStr[1]);
                     if(!dateFormatter.isValidDateTime())
-                        throw new DukeException(SPACES + "    ☹ OOPS!!! You did not key in a valid event time.\n" +
-                                "    Please try again. \n" + SPACES);
+                        throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! You did not key in a valid event time.\n" +
+                                "    Please try again. \n" + Duke_Response.SPACES);
 
                     task = new Event(splitStr[0], dateFormatter.getDate() + dateFormatter.getTime());
                     break;
                 default:
-                    throw new DukeException(SPACES + "    ☹ OOPS!!! You did not specify the type of task.\n" +
-                            "    Please key in the task then description. \n" + SPACES);
+                    throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! You did not specify the type of task.\n" +
+                            "    Please key in the task then description. \n" + Duke_Response.SPACES);
             }
 
             dukeWriteFile(message);
 
             tasks.add(task);
-            System.out.println(SPACES + "    Got it. I've added this task:\n"
+            System.out.println(Duke_Response.SPACES + "    Got it. I've added this task:\n"
                     + "     " + task.toString());
             System.out.println("    Now you have " + tasks.size() + " tasks in your list.\n"
-                    + SPACES);
+                    + Duke_Response.SPACES);
 
         } catch (DukeException e){
             System.out.println(e.getMessage());
@@ -162,28 +184,28 @@ public class Duke {
 
         try {
             if (arrStr.length == 1)
-                throw new DukeException(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
-                        "    To mark as done please key in a task number. \n" + SPACES);
+                throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
+                        "    To mark as done please key in a task number. \n" + Duke_Response.SPACES);
             taskNo = Integer.parseInt(arrStr[1]) - 1;
 
             if(tasks.size() <= taskNo)
-                throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid task number.\n" +
-                        "    To mark as done please key in a valid task number. \n" + SPACES);
+                throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! That is an invalid task number.\n" +
+                        "    To mark as done please key in a valid task number. \n" + Duke_Response.SPACES);
 
             Task task = tasks.get(taskNo);
 
             if(task.isCompleted()) {
-                throw new DukeException(SPACES + "    ☹ OOPS!!! This task has already been completed\n" + SPACES);
+                throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! This task has already been completed\n" + Duke_Response.SPACES);
             }
 
             task.markAsDone();
             dukeWriteFile(message);
 
-            System.out.println(SPACES + DONE + "      " + task.toString() + "\n" + SPACES);
+            System.out.println(Duke_Response.SPACES + DONE + "      " + task.toString() + "\n" + Duke_Response.SPACES);
 
         } catch (NumberFormatException e){
-            System.out.println(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
-                    "    To mark as done please key in a valid task number. \n" + SPACES);
+            System.out.println(Duke_Response.SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
+                    "    To mark as done please key in a valid task number. \n" + Duke_Response.SPACES);
         } catch (DukeException e){
             System.out.println(e.getMessage());
         }
@@ -196,23 +218,23 @@ public class Duke {
 
         try {
             if (arrStr.length == 1)
-                throw new DukeException(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
-                        "    To mark as done please key in a task number. \n" + SPACES);
+                throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
+                        "    To mark as done please key in a task number. \n" + Duke_Response.SPACES);
             taskNo = Integer.parseInt(arrStr[1]) - 1;
 
             if (tasks.size() <= taskNo)
-                throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid task number.\n" +
-                        "    To mark as done please key in a valid task number. \n" + SPACES);
+                throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! That is an invalid task number.\n" +
+                        "    To mark as done please key in a valid task number. \n" + Duke_Response.SPACES);
 
             dukeWriteFile(message);
 
-            System.out.println(SPACES + DELETE + "      " + tasks.get(taskNo).toString() + "\n" + SPACES);
+            System.out.println(Duke_Response.SPACES + DELETE + "      " + tasks.get(taskNo).toString() + "\n" + Duke_Response.SPACES);
 
             tasks.remove(taskNo);
 
         } catch (NumberFormatException e) {
-            System.out.println(SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
-                    "    To mark as done please key in a valid task number. \n" + SPACES);
+            System.out.println(Duke_Response.SPACES + "    ☹ OOPS!!! You did not enter the task number.\n" +
+                    "    To mark as done please key in a valid task number. \n" + Duke_Response.SPACES);
         } catch (DukeException e){
             System.out.println(e.getMessage());
         }
@@ -225,8 +247,8 @@ public class Duke {
 
         try {
             if(arrStr.length == 1 || arrStr[1].isEmpty())
-                throw new DukeException(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
-                        "    Please try again. \n" + SPACES);
+                throw new DukeException(Duke_Response.SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
+                        "    Please try again. \n" + Duke_Response.SPACES);
 
             for (Task i : tasks) {
                 if(i.getDescription().toLowerCase().contains(arrStr[1].toLowerCase())){
@@ -235,16 +257,16 @@ public class Duke {
             }
 
             if(searchResult.size() > 0){
-                System.out.print(SPACES + FIND);
+                System.out.print(Duke_Response.SPACES + FIND);
                 int counter = 1;
                 for (Task i : searchResult) {
                     System.out.println("    " + counter + "." + i.toString());
                     counter++;
                 }
-                System.out.println(SPACES);
+                System.out.println(Duke_Response.SPACES);
             } else {
-                System.out.println(SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
-                        "    Please try again. \n" + SPACES);
+                System.out.println(Duke_Response.SPACES + "    ☹ OOPS!!! That is an invalid input\n" +
+                        "    Please try again. \n" + Duke_Response.SPACES);
             }
 
 

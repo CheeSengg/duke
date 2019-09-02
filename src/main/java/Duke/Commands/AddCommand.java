@@ -43,10 +43,13 @@ public class AddCommand extends Command {
         switch (taskType.toLowerCase()){
             case "todo":
                 tasks.add(new Todo(description));
+                break;
             case "event":
                 tasks.add(new Event(description, dateTime));
+                break;
             case "deadline":
                 tasks.add(new Deadline(description, dateTime));
+                break;
         }
     }
 }

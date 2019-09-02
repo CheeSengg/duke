@@ -18,7 +18,7 @@ public class FindCommand extends Command{
 
     /**
      * Print out all the task that contains the item String
-     * @param tasks
+     * @param tasks ArrayList of task
      */
     @Override
     public void execute(TaskList tasks) {

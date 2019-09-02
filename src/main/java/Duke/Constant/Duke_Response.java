@@ -2,6 +2,12 @@ package Duke.Constant;
 
 public class Duke_Response {
 
+    public final static String LOGO = " ____        _        \n"
+                                    + "|  _ \\ _   _| | _____ \n"
+                                    + "| | | | | | | |/ / _ \\\n"
+                                    + "| |_| | |_| |   <  __/\n"
+                                    + "|____/ \\__,_|_|\\_\\___|\n";
+
     public final static String SPACES = "   __________________________________\n";
 
     public final static String GREET = "    Hello! I'm Duke\n    What can I do for you?\n";
@@ -18,7 +24,7 @@ public class Duke_Response {
 
     public final static String FIND_FOUND = "    Here are the matching tasks in your list:\n";
 
-    public final static String NOT_FOUND = "    Sorry! The task cannot be found: \n";
+    public final static String NOT_FOUND = "    Sorry! The task cannot be found. \n";
 
     public final static String EXCEPTION = "    ☹ OOPS!!! That is an invalid input\n    Please try again. \n";
 
