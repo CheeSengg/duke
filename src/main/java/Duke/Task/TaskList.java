@@ -9,7 +9,7 @@ public class TaskList extends ArrayList<Task> {
      * @param index the index of task to be queried, index starts from 1
      * @return The task with index starting from 0
      */
-    public Task getTask(int index){
+    private Task getTask(int index){
         return this.get(index - 1);
     }
 
@@ -21,6 +21,16 @@ public class TaskList extends ArrayList<Task> {
     public Task deleteTask(int index){
 
         return this.remove(index-1);
+    }
+
+    /**
+     *
+     * @param index The index of task to check if it is already completed, index starts from 1
+     * @return {@code true} The task has been marked as completed
+     *          {@code false} The task has not been mark as completed
+     */
+    public boolean isCompletedTask(int index){
+        return getTask(index).isCompleted();
     }
 
     /**
@@ -43,10 +53,12 @@ public class TaskList extends ArrayList<Task> {
     public ArrayList<Task> findTask(String item){
         ArrayList<Task> foundTask = new ArrayList<>();
         for(Task i : this){
-            if(i.getDescription().contains("item"))
+            if(i.getDescription().contains(item))
                 foundTask.add(i);
         }
 
         return foundTask;
     }
+
+
 }

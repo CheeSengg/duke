@@ -1,11 +1,19 @@
 package Duke.Commands;
 
+import Duke.Constant.Duke_Response;
 import Duke.Task.TaskList;
+import Duke.Ui;
 
 public class ByeCommand extends Command{
-    @Override
-    public void execute(TaskList tasks) {
 
+    /**
+     * Set messages by ui to BYE
+     * @param tasks The arraylist of task stored by Duke
+     * @param ui The user interface that handles messages
+     */
+    @Override
+    public void execute(TaskList tasks, Ui ui) {
+        ui.setMessage(new Duke_Response().BYE);
     }
 
     /**
