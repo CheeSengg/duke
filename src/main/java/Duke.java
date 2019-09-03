@@ -1,4 +1,5 @@
 import Duke.Commands.Command;
+import Duke.Constant.Duke_Response;
 import Duke.Exception.DukeException;
 import Duke.Parser.Parser;
 import Duke.Task.TaskList;
@@ -31,9 +32,9 @@ public class Duke {
                 c.execute(tasks, ui);
                 isExit = c.isExit();
             } catch (DukeException e) {
-                System.out.println(e.getMessage());
+                ui.setMessage(e.getMessage());
             } catch (NumberFormatException e){
-                ui.setMessage("     Invalid Command\n");
+                ui.setMessage(new Duke_Response().EXCEPTION);
             } finally {
                 ui.showLine();
             }

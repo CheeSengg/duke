@@ -1,6 +1,7 @@
 package Duke.Parser;
 
 import Duke.Commands.*;
+import Duke.Constant.Duke_Response;
 import Duke.Exception.DukeException;
 
 public class Parser {
@@ -10,11 +11,15 @@ public class Parser {
      * @param taskType The type of Task
      * @param command Command to be parse to description and dateTime
      * @return AddCommand for Event task type
+     * @throws DukeException
      */
-    private static Command parseEvent(String taskType, String command){
+    private static Command parseEvent(String taskType, String command) throws DukeException{
         String[] splitStr = command.split("/at ", 2);
+        if(splitStr.length == 1 || splitStr[1].isEmpty())
+            throw new DukeException(new Duke_Response().EXCEPTION);
+        else
+            return new AddCommand(taskType, splitStr[0], splitStr[1]);
 
-        return new AddCommand(taskType, splitStr[0], splitStr[1]);
     }
 
     /**
@@ -22,11 +27,14 @@ public class Parser {
      * @param taskType The type of Task
      * @param command Command to be parse to description and dateTime
      * @return AddCommand for Deadline task type
+     * @throws DukeException
      */
-    private static Command parseDeadline(String taskType, String command){
+    private static Command parseDeadline(String taskType, String command) throws DukeException{
         String[] splitStr = command.split("/by ", 2);
-
-        return new AddCommand(taskType, splitStr[0], splitStr[1]);
+        if(splitStr.length == 1 || splitStr[1].isEmpty())
+            throw new DukeException(new Duke_Response().EXCEPTION);
+        else
+            return new AddCommand(taskType, splitStr[0], splitStr[1]);
     }
 
     /**
@@ -63,27 +71,36 @@ public class Parser {
     public static Command parse(String fullCommand) throws NumberFormatException, DukeException{
         String[] splitStr = fullCommand.split(" ", 2);
 
-        switch (splitStr[0].toLowerCase()){
-            case "todo":
-                return new AddCommand(splitStr[0], splitStr[1]);
-            case "deadline":
-                return parseDeadline(splitStr[0], splitStr[1]);
-            case "event":
-                return parseEvent(splitStr[0], splitStr[1]);
-            case "list":
-                return new ListCommand();
-            case "find":
-                return new FindCommand(splitStr[1]);
-            case "done":
-                return parseDone(splitStr[1]);
-            case "delete":
-                return parseDelete(splitStr[1]);
-            case "bye":
-                return new ByeCommand();
-            default:
-                throw new DukeException("Invalid Command");
+        if(splitStr.length == 2 && !splitStr[1].isEmpty()) {
+            switch (splitStr[0].toLowerCase()) {
+                case "todo":
+                    return new AddCommand(splitStr[0], splitStr[1]);
+                case "deadline":
+                    return parseDeadline(splitStr[0], splitStr[1]);
+                case "event":
+                    return parseEvent(splitStr[0], splitStr[1]);
+                case "find":
+                    return new FindCommand(splitStr[1]);
+                case "done":
+                    return parseDone(splitStr[1]);
+                case "delete":
+                    return parseDelete(splitStr[1]);
+                case "bye":
+                    return new ByeCommand();
+                case "list":
+                    return new ListCommand();
+                default:
+                    throw new DukeException(new Duke_Response().EXCEPTION);
+            }
+        } else {
+            switch (splitStr[0].toLowerCase()) {
+                case "bye":
+                    return new ByeCommand();
+                case "list":
+                    return new ListCommand();
+                default:
+                    throw new DukeException(new Duke_Response().EXCEPTION);
+            }
         }
-
-
     }
 }
