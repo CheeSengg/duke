@@ -46,4 +46,9 @@ public abstract class Task {
     public String toString(){
         return  "[" + getStatusIcon() + "] " + this.description;
     }
+
+
+    public abstract String getSymbol();
+
+    public abstract String writeToFile();
 }
