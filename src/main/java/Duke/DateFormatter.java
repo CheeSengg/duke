@@ -1,33 +1,43 @@
+package Duke;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class DateFormatter {
     private String date;
     private String time;
-
+    private final DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     /**
      *
      * @param message the deadline or event time to be processed to give date and time params
      */
-    DateFormatter(String message){
+    public DateFormatter(String message){
         String[] splitStr = message.split(" ");
+        if(splitStr.length == 2) {
+            date = formatDate(splitStr[0]);
+            time = formatTime(splitStr[1]);
+        }
 
-        date = formatDate(splitStr[0]);
-        time = formatTime(splitStr[1]);
+        if(date == null || time == null){
+            date = message;
+            time = null;
+        }
     }
 
-    /**
-     *
-     * @param date the date as per input by user
-     * @return String new format for the date, null if date does not exist
-     */
+
     private String formatDate(String date){
         String[] splitDate = date.split("/");
-        String day = dayFormat(splitDate[0]);
-        String month = monthFormat(splitDate[1]);
-        String year = splitDate[2];
+        if(splitDate.length == 3) {
+            String day = dayFormat(splitDate[0]);
+            String month = monthFormat(splitDate[1]);
+            String year = splitDate[2];
+            if (month == null || day == null || !isValidDate(splitDate[0], splitDate[1], splitDate[2]))
+                return null;
 
-        if(month == null || day == null || !isValidDate(splitDate[0], splitDate[1], splitDate[2]))
+            return day + month + year + ", ";
+        } else {
             return null;
-
-        return day + month + year + ", ";
+        }
     }
 
     /**
@@ -94,23 +104,17 @@ public class DateFormatter {
      *         {@code false} otherwise
      */
     private boolean isValidDate(String day, String month, String year){
-        if(month.equals("2")){
-            if(isLeap(Integer.parseInt(year))){
-                if(Integer.parseInt(day) <= 29)
-                    return true;
-            } else{
-                if(Integer.parseInt(day) <= 28)
-                    return true;
-            }
-        } else if(month.equals("4") || month.equals("6") || month.equals("9") || month.equals("11")){
-            if(Integer.parseInt(day) <= 30)
-                return true;
-        } else {
-            if(Integer.parseInt(day) <= 31)
-                return true;
-        }
+        int yr = Integer.parseInt(year);
+        int mth = Integer.parseInt(month);
+        int dy = Integer.parseInt(day);
 
-        return false;
+        if(mth == 2){
+            return (isLeap(yr) && dy <= 29) || (!isLeap(yr) && dy <= 28);
+        } else if(mth == 4|| mth == 6|| mth == 9 || mth == 11){
+            return dy <= 30;
+        } else {
+            return dy <= 31;
+        }
     }
 
     /**
@@ -120,11 +124,7 @@ public class DateFormatter {
      *         {@code false} otherwise
      */
     private boolean isLeap(int year){
-        if(year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)){
-            return true;
-        }
-
-        return false;
+        return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
     }
 
     /**
@@ -151,18 +151,15 @@ public class DateFormatter {
             return hour + "." + min + suffix;
     }
 
-    public String getDate(){
-        return this.date;
+    public String getDateTime(){
+        if(this.time == null){
+            return this.date;
+        }
+
+        return this.date + this.time;
     }
 
-    public String getTime(){
-        return this.time;
-    }
-
-    public boolean isValidDateTime(){
-        if(date == null || time == null)
-            return false;
-
-        return true;
+    public boolean isValidDateTime() {
+        return date != null && time != null;
     }
 }

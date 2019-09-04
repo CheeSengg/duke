@@ -4,6 +4,8 @@ import Duke.Constant.Duke_Response;
 import Duke.Storage;
 import Duke.Task.*;
 import Duke.Ui;
+import Duke.DateFormatter;
+
 
 public class AddCommand extends Command {
     private String taskType;
@@ -19,7 +21,7 @@ public class AddCommand extends Command {
     public AddCommand(String taskType, String description){
         this.taskType = taskType;
         this.description = description;
-        this.dateTime = null;
+        this.dateTime = "";
     }
 
     /**
@@ -43,6 +45,7 @@ public class AddCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         Task task;
+        DateFormatter dateFormatter = new DateFormatter(dateTime);
         switch (taskType.toLowerCase()){
             case "todo":
                 task = new Todo(description);
@@ -51,13 +54,13 @@ public class AddCommand extends Command {
                         + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
                 break;
             case "event":
-                task = new Event(description, dateTime);
+                task = new Event(description, dateFormatter.getDateTime());
                 tasks.add(task);
                 ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
                         + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
                 break;
             case "deadline":
-                task = new Deadline(description, dateTime);
+                task = new Deadline(description, dateFormatter.getDateTime());
                 tasks.add(task);
                 ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
                         + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
