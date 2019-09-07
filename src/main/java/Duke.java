@@ -6,6 +6,7 @@ import Duke.Task.TaskList;
 import Duke.Ui;
 
 import java.io.File;
+import java.util.Scanner;
 
 public class Duke {
     private TaskList tasks;
@@ -27,22 +28,23 @@ public class Duke {
 
     public void run() {
         boolean isExit = false;
-
+        Scanner sc = new Scanner(System.in);
         ui.showWelcome();
 
         while (!isExit) {
             try {
-                String fullCommand = ui.readCommand();
+                String fullCommand = ui.readCommand(sc);
                 Command c = Parser.parse(fullCommand);
                 c.execute(tasks, ui, storage);
                 isExit = c.isExit();
             } catch (DukeException e) {
-                System.out.println(e.getMessage());
+                ui.setMessage(e.getMessage());
             } catch (NumberFormatException e){
                 ui.setMessage("     Invalid Command\n");
             } finally {
                 ui.showLine();
             }
         }
+        sc.close();
     }
 }
