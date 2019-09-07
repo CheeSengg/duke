@@ -9,8 +9,11 @@ import Duke.Ui;
 public class ListCommand extends Command{
 
     /**
-     * List out all the task, listing of task starts from 1
-     * @param tasks ArrayList of task
+     * Lists all the tasks stored in Duke. Sets message of Ui
+     * to show all the tasks stored. Tasks are numbered starting from
+     * index 1.
+     * @param tasks The list of task stored by Duke
+     * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */
     @Override

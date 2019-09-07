@@ -8,8 +8,8 @@ import Duke.Ui;
 public class ByeCommand extends Command{
 
     /**
-     * Write all the tasks in TaskList into duke.txt
-     * Set messages by ui to BYE
+     * Write all the tasks in TaskList into the file in Storage Class.
+     * Sets message of Ui to show that it is shutting down.
      * @param tasks The arraylist of task stored by Duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
@@ -21,8 +21,8 @@ public class ByeCommand extends Command{
     }
 
     /**
-     * Exit program
-     * @return quit = true
+     * Exits Duke program
+     * @return Sets Boolean expression to true
      */
     @Override
     public boolean isExit() {

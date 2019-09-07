@@ -37,7 +37,7 @@ public class Parser {
      * Mark the task indicated by user to be done
      * @param command The taskNo to be converted to an integer
      * @return DoneCommand with the index of item to be mark as done
-     * @throws NumberFormatException
+     * @throws NumberFormatException if command has characters
      */
     private static Command parseDone(String command) throws NumberFormatException{
         int index = Integer.parseInt(command);
@@ -49,7 +49,7 @@ public class Parser {
      * Delete the task indicated by user
      * @param command The taskNo to be converted to an integer
      * @return DeleteCommand with the index of item to be deleted
-     * @throws NumberFormatException
+     * @throws NumberFormatException if command has characters.
      */
     private static Command parseDelete(String command) throws NumberFormatException{
         int index = Integer.parseInt(command);
@@ -58,11 +58,11 @@ public class Parser {
     }
 
     /**
-     * To return the correct command given by user, Class method
+     * Return the correct command given by user, Class method
      * @param fullCommand Command input by user to be parse
      * @return The correct Command class as defined by first word
-     * @throws NumberFormatException
-     * @throws DukeException
+     * @throws NumberFormatException if command has characters.
+     * @throws DukeException if the command is invalid or there are missing parameters.
      */
     public static Command parse(String fullCommand) throws NumberFormatException, DukeException{
         String[] splitStr = fullCommand.split(" ", 2);

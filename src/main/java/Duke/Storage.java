@@ -25,8 +25,9 @@ public class Storage {
     }
 
     /**
-     * Read all the tasks that are stored in the duke.txt and load into TaskList
-     * @return TaskList with all the tasks that were stored in the duke.txt file
+     * Read all the tasks that are stored in the file. Loads and restore
+     * progress of Duke.
+     * @return TaskList with all the tasks that were stored in file.
      */
     public TaskList load(){
         TaskList tasks = new TaskList();
@@ -66,8 +67,10 @@ public class Storage {
     }
 
     /**
-     * Write to duke.txt all the tasks that has been stored in TaskList
-     * @param tasks The TaskList with all the added tasks. To be written into txt file for storage
+     * Deletes old file and creates new file with the same filepath.
+     * Writes all the tasks that has been stored in TaskList to the new file
+     * for Duke.
+     * @param tasks The list of Task that is stored by Duke
      */
     public void write(TaskList tasks){
 

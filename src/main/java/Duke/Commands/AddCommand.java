@@ -13,8 +13,8 @@ public class AddCommand extends Command {
     private String dateTime;
 
     /**
-     * Constructor for ToDo task
-     * There is no dateTime for this type of task
+     * Creates an AddCommand with the specified taskType and
+     * description. Used for Todo task.
      * @param taskType The task type to be added
      * @param description The description of task
      */
@@ -25,7 +25,8 @@ public class AddCommand extends Command {
     }
 
     /**
-     * Constructor for Event and Deadline Task
+     * Creates an AddCommand with the specified taskType,
+     * description and dateTime. Used for Deadline and Event tasks
      * @param taskType The task type to be added
      * @param description The description of task
      * @param dateTime The date and time of task to either be completed or attend to
@@ -37,8 +38,9 @@ public class AddCommand extends Command {
     }
 
     /**
-     * To append new task to the arraylist
-     * @param tasks The arraylist of task stored by Duke
+     * Append a new task to the TaskList. Sets message of Ui
+     * based on the task that has been added.
+     * @param tasks The list of task stored by Duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */

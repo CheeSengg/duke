@@ -8,15 +8,15 @@ public abstract class Command {
     protected boolean quit;
 
     /**
-     * @param tasks The arraylist of task stored by Duke
+     * @param tasks The list of task stored by Duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage);
 
     /**
-     * Duke does not stop running
-     * @return quit = false
+     * Duke continues to run.
+     * @return Sets boolean expression to false.
      */
     public boolean isExit(){
         return false;

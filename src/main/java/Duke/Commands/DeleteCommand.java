@@ -10,16 +10,18 @@ public class DeleteCommand extends Command{
     private int index;
 
     /**
-     * Constructor for DeleteCommand
-     * @param index The task to be deleted, index of user's list starts from 1
+     * Creates DeleteCommand with the specified index
+     * to be deleted. Index starts from 1.
+     * @param index Index of task to be deleted.
      */
     public DeleteCommand(int index){
         this.index = index;
     }
 
     /**
-     * Delete the task that is input by user
-     * @param tasks The arraylist of task stored by Duke
+     * Deletes the task specified by user. Sets message of Ui
+     * to show if command is successfully carried out.
+     * @param tasks The list of task stored by Duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */

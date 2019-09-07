@@ -10,16 +10,18 @@ public class DoneCommand extends Command{
     private int index;
 
     /**
-     * Constructor for DoneCommand
-     * @param index The task to be set as done, index of user's list starts from 1
+     * Creates a DoneCommand with the specified index
+     * to be mark as done. Index starts from 1.
+     * @param index Index of task to be mark as done.
      */
     public DoneCommand(int index){
         this.index = index;
     }
 
     /**
-     * Mark the task that is input by user as done
-     * @param tasks The arraylist of task stored by Duke
+     * Marks the task specified by user as done. Sets message of Ui
+     * to show if Command is successfully carried out.
+     * @param tasks The list of task stored by Duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */
