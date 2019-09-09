@@ -53,7 +53,7 @@ public class Ui {
     /**
      * Prints out the Duke's response based on user's input.
      */
-    public void showLine(){
-        System.out.println(this.message);
+    public String showLine(){
+        return this.message;
     }
 }

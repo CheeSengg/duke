@@ -1,13 +1,12 @@
 import Duke.Commands.Command;
 import Duke.Exception.DukeException;
 import Duke.Parser.Parser;
-import Duke.Storage;
 import Duke.Task.TaskList;
+import Duke.Storage;
 import Duke.Ui;
 
 import java.io.File;
 import java.util.Scanner;
-
 /**
  * <h1>Duke</h1>
  * The Duke program implements a Task Manager for users to
@@ -17,21 +16,23 @@ import java.util.Scanner;
  * @version 1.0
  * @since 2019-09-07
  */
-public class Duke {
+public class Duke{
+
+
     /**
      * Stores and keeps track of all user's task.
      */
-    private TaskList tasks;
+    public TaskList tasks;
 
     /**
      * User Interface that handles the response of Duke.
      */
-    private Ui ui;
+    public Ui ui;
 
     /**
      * Stores filepath for Duke to write to and load from.
      */
-    private Storage storage;
+    public Storage storage;
 
 
     public Duke(File filePath){
@@ -61,7 +62,7 @@ public class Duke {
      * The program will keep running till the user inputs the command
      * 'Bye' and exits the while loop.
      */
-    private void run() {
+    public void run() {
         boolean isExit = false;
         Scanner sc = new Scanner(System.in);
         ui.showWelcome();
@@ -82,4 +83,6 @@ public class Duke {
         }
         sc.close();
     }
+
+
 }
