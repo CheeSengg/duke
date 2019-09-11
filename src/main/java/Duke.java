@@ -65,7 +65,8 @@ public class Duke{
     public void run() {
         boolean isExit = false;
         Scanner sc = new Scanner(System.in);
-        ui.showWelcome();
+        System.out.println(ui.showWelcome());
+
 
         while (!isExit) {
             try {

@@ -46,8 +46,8 @@ public class Ui {
     /**
      * Prints out the greeting by Duke program when Duke starts running.
      */
-    public void showWelcome(){
-        System.out.println(dr.LOGO+ dr.SPACES + dr.GREET + dr.SPACES);
+    public String showWelcome(){
+        return dr.LOGO+ dr.SPACES + dr.GREET + dr.SPACES;
     }
 
     /**
