@@ -8,17 +8,17 @@ class EventTest {
     Event event = new Event("Test String", "Test date");
 
     @Test
-    void toString1() {
+    void testToString1() {
         assertEquals(event.toString(),"[E][\u2718] Test String (at: Test date)\n" );
     }
 
     @Test
-    void getSymbol() {
+    void testGetSymbol() {
         assertEquals(event.getSymbol(), "[E]");
     }
 
     @Test
-    void writeToFile() {
+    void testWriteToFile() {
         assertEquals(event.writeToFile(), "E | 0 | Test String | Test date");
     }
 }

@@ -8,7 +8,7 @@ class TaskListTest {
     TaskList tasks = new TaskList();
 
     @Test
-    void deleteTask() {
+    void testDeleteTask() {
         tasks.add(new Event("test", "roger"));
         tasks.add(new Todo("test2"));
 
@@ -17,14 +17,14 @@ class TaskListTest {
     }
 
     @Test
-    void isCompletedTask() {
+    void testIsCompletedTask() {
         tasks.add(new Todo("test"));
 
         assertFalse(tasks.isCompletedTask(1));
     }
 
     @Test
-    void doneTask() {
+    void testDoneTask() {
         tasks.add(new Todo("test"));
         Task doneTask = tasks.doneTask(1);
 
@@ -32,7 +32,7 @@ class TaskListTest {
     }
 
     @Test
-    void findTask() {
+    void testFindTask() {
         tasks.add(new Todo("test"));
         tasks.add(new Todo("test2"));
         tasks.add(new Todo("test3"));
