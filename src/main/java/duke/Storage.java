@@ -1,35 +1,47 @@
-package Duke;
+package duke;
 
-import Duke.Task.*;
 
-import java.io.*;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.TaskList;
+import duke.task.Todo;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class Storage {
     private File filePath;
 
     /**
-     * Constructor for Storage Class
+     * Constructor for Storage Class.
      * Create directory and file in the event that it does not exist
      * @param filePath File, the path of the duke.txt File
      */
-    public Storage(File filePath){
+    public Storage(File filePath) {
         this.filePath = filePath;
         try {
-            if(!filePath.getParentFile().exists())
+            if (!filePath.getParentFile().exists()) {
                 filePath.getParentFile().mkdirs();
-            if(!filePath.exists())
+            }
+            if (!filePath.exists()) {
                 filePath.createNewFile();
-        } catch (IOException e){
+            }
+        } catch (IOException e) {
             System.out.println("Unable to create file.\n");
         }
     }
 
     /**
      * Read all the tasks that are stored in the file. Loads and restore
-     * progress of Duke.
+     * progress of duke.
      * @return TaskList with all the tasks that were stored in file.
      */
-    public TaskList load(){
+    public TaskList load() {
         TaskList tasks = new TaskList();
         try {
             FileReader rd = new FileReader(filePath);
@@ -38,18 +50,18 @@ public class Storage {
             String message;
             int counter = 0;
 
-            while((message = br.readLine()) != null){
+            while ((message = br.readLine()) != null) {
                 String[] arrStr = message.split(" \\| ");
 
-                if(arrStr.length == 3){
+                if (arrStr.length == 3) {
                     tasks.add(new Todo(arrStr[2]));
-                } else if (arrStr[0].equals("D")){
+                } else if (arrStr[0].equals("D")) {
                     tasks.add(new Deadline(arrStr[2], arrStr[3]));
                 } else {
                     tasks.add(new Event(arrStr[2], arrStr[3]));
                 }
 
-                if(arrStr[1].equals("1")){
+                if (arrStr[1].equals("1")) {
                     tasks.get(counter).markAsDone();
                 }
 
@@ -59,7 +71,7 @@ public class Storage {
             br.close();
             rd.close();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Unable to load file.\n");
         }
 
@@ -69,21 +81,21 @@ public class Storage {
     /**
      * Deletes old file and creates new file with the same filepath.
      * Writes all the tasks that has been stored in TaskList to the new file
-     * for Duke.
-     * @param tasks The list of Task that is stored by Duke
+     * for duke.
+     * @param tasks The list of task that is stored by duke
      */
-    public void write(TaskList tasks){
+    public void write(TaskList tasks) {
 
         try {
             filePath.delete();
             filePath.createNewFile();
             FileWriter wr = new FileWriter(filePath, true);
 
-            for(Task i : tasks){
+            for (Task i : tasks) {
                 wr.write(i.writeToFile() + "\n");
             }
             wr.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println(" BYE, sorry you suck.");
         }
     }

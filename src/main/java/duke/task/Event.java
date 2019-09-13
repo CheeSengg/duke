@@ -1,22 +1,23 @@
-package Duke.Task;
+package duke.task;
 
-import Duke.DateFormatter;
+import duke.DateFormatter;
 
 public class Event extends Task {
     private final String SYMBOL = "[E]";
     private String at;
 
     /**
-     * Constructor for Event task
+     * Constructor for Event task.
      * @param description The event name
      * @param date The dateTime of the event
      */
-    public Event(String description, String date){
+    public Event(String description, String date) {
         super(description.trim());
         this.at = date;
     }
 
     /**
+     * Details of the task.
      * @return return the expected format of String message for this task
      */
     @Override

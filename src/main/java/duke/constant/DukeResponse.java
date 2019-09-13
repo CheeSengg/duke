@@ -1,6 +1,6 @@
-package Duke.Constant;
+package duke.constant;
 
-public class Duke_Response {
+public class DukeResponse {
 
     public final String LOGO = "Hello from\n"
                                 + " ____        _        \n"
@@ -11,8 +11,8 @@ public class Duke_Response {
 
     public final String SPACES = "_________________________________________\n";
 
-    public final String GREET = "Hello! I'm Duke\n" +
-            "What can I do for you?\n";
+    public final String GREET = "Hello! I'm duke\n"
+            + "What can I do for you?\n";
 
     public final String BYE = "Bye. Hope to see you again soon!\n";
 
@@ -30,8 +30,8 @@ public class Duke_Response {
 
     public final String NOT_FOUND = "☹ OOPS!!! The task cannot be found. \n";
 
-    public final String EXCEPTION = "☹ OOPS!!! That is an invalid input\n" +
-            "Please try again. \n";
+    public final String EXCEPTION = "☹ OOPS!!! That is an invalid input\n"
+            + "Please try again. \n";
 
     public final String ADD = "Got it. I've added this task:\n";
 }

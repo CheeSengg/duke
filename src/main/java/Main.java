@@ -8,12 +8,12 @@
 //import java.io.IOException;
 //
 //public class Main extends Application {
-//    private Duke duke;
+//    private duke duke;
 //
 //    private void loadDuke(){
 //        File currentDir = new File(System.getProperty("user.dir"));
 //        File filePath = new File(currentDir.toString() + "\\src\\main\\data\\duke.txt");
-//        duke = new Duke(filePath);
+//        duke = new duke(filePath);
 //    }
 //
 //    @Override

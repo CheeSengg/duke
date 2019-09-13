@@ -1,27 +1,27 @@
-package Duke.Commands;
+package duke.commands;
 
-import Duke.Constant.Duke_Response;
-import Duke.Storage;
-import Duke.Task.TaskList;
-import Duke.Ui;
+import duke.constant.DukeResponse;
+import duke.Storage;
+import duke.task.TaskList;
+import duke.Ui;
 
-public class ByeCommand extends Command{
+public class ByeCommand extends Command {
 
     /**
      * Write all the tasks in TaskList into the file in Storage Class.
      * Sets message of Ui to show that it is shutting down.
-     * @param tasks The list of task stored by Duke
+     * @param tasks The list of task stored by duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         storage.write(tasks);
-        ui.setMessage(new Duke_Response().BYE);
+        ui.setMessage(new DukeResponse().BYE);
     }
 
     /**
-     * Exits Duke program
+     * Exits duke program.
      * @return Sets Boolean expression to true
      */
     @Override

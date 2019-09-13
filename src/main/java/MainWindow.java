@@ -1,6 +1,6 @@
-//import Duke.Commands.Command;
-//import Duke.Exception.DukeException;
-//import Duke.Parser.Parser;
+//import duke.commands.Command;
+//import duke.exception.DukeException;
+//import duke.parser.parser;
 //import javafx.fxml.FXML;
 //import javafx.scene.control.Button;
 //import javafx.scene.control.Label;
@@ -18,14 +18,14 @@
 //    @FXML
 //    private Button send;
 //
-//    private Duke duke;
+//    private duke duke;
 //
 //    @FXML
 //    public void initialize(){
 //        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
 //    }
 //
-//    public void setDuke(Duke d) {
+//    public void setDuke(duke d) {
 //        duke = d;
 //        dialogContainer.getChildren().add(new Label(duke.ui.showWelcome()));
 //    }
@@ -33,7 +33,7 @@
 //    @FXML
 //    private void handleUserInput(){
 //        try {
-//            Command c = Parser.parse(userInput.getText());
+//            Command c = parser.parse(userInput.getText());
 //            c.execute(duke.tasks, duke.ui, duke.storage);
 //        } catch (DukeException e) {
 //            duke.ui.setMessage(e.getMessage());

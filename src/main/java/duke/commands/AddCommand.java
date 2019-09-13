@@ -1,11 +1,15 @@
-package Duke.Commands;
+package duke.commands;
 
-import Duke.Constant.Duke_Response;
-import Duke.Exception.DukeInvalidDateException;
-import Duke.Storage;
-import Duke.Task.*;
-import Duke.Ui;
-import Duke.DateFormatter;
+import duke.constant.DukeResponse;
+import duke.DateFormatter;
+import duke.exception.DukeInvalidDateException;
+import duke.Storage;
+import duke.task.Deadline;
+import duke.task.Task;
+import duke.task.TaskList;
+import duke.task.Todo;
+import duke.task.Event;
+import duke.Ui;
 
 
 public class AddCommand extends Command {
@@ -20,7 +24,7 @@ public class AddCommand extends Command {
      * @param taskType The task type to be added
      * @param description The description of task
      */
-    public AddCommand(String taskType, String description){
+    public AddCommand(String taskType, String description) {
         this.taskType = taskType;
         this.description = description;
         this.dateTime = "";
@@ -33,7 +37,7 @@ public class AddCommand extends Command {
      * @param description The description of task
      * @param dateTime The date and time of task to either be completed or attend to
      */
-    public AddCommand(String taskType, String description, String dateTime){
+    public AddCommand(String taskType, String description, String dateTime) {
         this.taskType = taskType;
         this.description = description;
         this.dateTime = dateTime;
@@ -41,12 +45,12 @@ public class AddCommand extends Command {
 
     /**
      * Append a new task to the TaskList.
-     * @param tasks The list of task stored by Duke
+     * @param tasks The list of task stored by duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage){
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             Task task;
             DateFormatter dateFormatter = new DateFormatter(dateTime);
@@ -68,20 +72,23 @@ public class AddCommand extends Command {
                     tasks.add(task);
                     setResponse(ui, task.toString(), tasks.size());
                     break;
+                default:
+                    ui.setMessage("Invalid Command");
             }
-        }catch (DukeInvalidDateException e){
+        } catch (DukeInvalidDateException e) {
             ui.setMessage(e.getMessage());
         }
     }
 
     /**
-     * Check if input date is valid
+     * Check if input date is valid.
      * @param dateFormatter Checks validity of the date and time format
      * @throws DukeInvalidDateException If the date or time format is invalid
      */
-    private void checkDateValidity(DateFormatter dateFormatter) throws DukeInvalidDateException{
-        if(!dateFormatter.isValidDateTime())
+    private void checkDateValidity(DateFormatter dateFormatter) throws DukeInvalidDateException {
+        if (!dateFormatter.isValidDateTime()) {
             throw new DukeInvalidDateException();
+        }
     }
 
     /**
@@ -90,8 +97,8 @@ public class AddCommand extends Command {
      * @param taskString Details of the task added
      * @param size Number of existing task in ArrayList
      */
-    private void setResponse(Ui ui, String taskString, int size){
-        ui.setMessage(new Duke_Response().ADD + taskString + "\n"
+    private void setResponse(Ui ui, String taskString, int size) {
+        ui.setMessage(new DukeResponse().ADD + taskString + "\n"
                 + "Now you have " + size + " tasks in your list.\n");
     }
 }

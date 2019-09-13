@@ -1,22 +1,28 @@
-package Duke.Task;
+package duke.task;
 
-public class Todo extends Task {
-    private final String SYMBOL = "[T]";
+import duke.DateFormatter;
+
+public class Deadline extends Task {
+    private final String SYMBOL = "[D]";
+    private String by;
 
     /**
-     * Constructor for Todo task
+     * Constructor for Deadline task.
      * @param description The deadline's task name
+     * @param by The dateTime of the deadline
      */
-    public Todo(String description){
+    public Deadline(String description, String by) {
         super(description.trim());
+        this.by = by;
     }
 
     /**
+     * Details of the task.
      * @return the expected format of String message for this task
      */
     @Override
     public String toString() {
-        return SYMBOL + super.toString() + "\n";
+        return SYMBOL + super.toString() + " (by: " + new DateFormatter(this.by).getDateTime() + ")\n";
     }
 
     /**
@@ -35,6 +41,6 @@ public class Todo extends Task {
      */
     @Override
     public String writeToFile() {
-        return String.format("T | %d | %s",  (isCompleted() ? 1 : 0), this.getDescription());
+        return String.format("D | %d | %s | %s",  (isCompleted() ? 1 : 0), this.getDescription(), this.by);
     }
 }

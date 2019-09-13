@@ -1,24 +1,25 @@
-package Duke.Commands;
+package duke.commands;
 
-import Duke.Storage;
-import Duke.Task.TaskList;
-import Duke.Ui;
+import duke.Storage;
+import duke.task.TaskList;
+import duke.Ui;
 
 public abstract class Command {
     protected boolean quit;
 
     /**
-     * @param tasks The list of task stored by Duke
+     * Execute corresponding command and store response to Ui.
+     * @param tasks The list of task stored by duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage);
 
     /**
-     * Duke continues to run.
+     * duke continues to run.
      * @return Sets boolean expression to false.
      */
-    public boolean isExit(){
+    public boolean isExit() {
         return false;
     }
 }
