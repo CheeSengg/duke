@@ -42,6 +42,8 @@ public class MainWindow {
         }
         Label input = new Label(userInput.getText());
         Label response = new Label(duke.ui.showLine());
+        input.setWrapText(true);
+        response.setWrapText(true);
         dialogContainer.getChildren().addAll(input, response);
 
         userInput.clear();
