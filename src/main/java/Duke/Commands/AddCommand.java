@@ -40,8 +40,7 @@ public class AddCommand extends Command {
     }
 
     /**
-     * Append a new task to the TaskList. Sets message of Ui
-     * based on the task that has been added.
+     * Append a new task to the TaskList.
      * @param tasks The list of task stored by Duke
      * @param ui The user interface that handles messages
      * @param storage The database to read files and write txt files
@@ -75,13 +74,24 @@ public class AddCommand extends Command {
         }
     }
 
+    /**
+     * Check if input date is valid
+     * @param dateFormatter Checks validity of the date and time format
+     * @throws DukeInvalidDateException If the date or time format is invalid
+     */
     private void checkDateValidity(DateFormatter dateFormatter) throws DukeInvalidDateException{
         if(!dateFormatter.isValidDateTime())
             throw new DukeInvalidDateException();
     }
 
-    private void setResponse(Ui ui, String response, int size){
-        ui.setMessage(new Duke_Response().ADD + response
-                + "\nNow you have " + size + " tasks in your list.\n");
+    /**
+     * Sets message of Ui based on the task that has been added.
+     * @param ui The user interface that handles messages
+     * @param taskString Details of the task added
+     * @param size Number of existing task in ArrayList
+     */
+    private void setResponse(Ui ui, String taskString, int size){
+        ui.setMessage(new Duke_Response().ADD + taskString + "\n"
+                + "Now you have " + size + " tasks in your list.\n");
     }
 }
