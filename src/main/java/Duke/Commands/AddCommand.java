@@ -1,6 +1,7 @@
 package Duke.Commands;
 
 import Duke.Constant.Duke_Response;
+import Duke.Exception.DukeInvalidDateException;
 import Duke.Storage;
 import Duke.Task.*;
 import Duke.Ui;
@@ -11,6 +12,7 @@ public class AddCommand extends Command {
     private String taskType;
     private String description;
     private String dateTime;
+
 
     /**
      * Creates an AddCommand with the specified taskType and
@@ -45,28 +47,41 @@ public class AddCommand extends Command {
      * @param storage The database to read files and write txt files
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        Task task;
-        DateFormatter dateFormatter = new DateFormatter(dateTime);
-        switch (taskType.toLowerCase()){
-            case "todo":
-                task = new Todo(description);
-                tasks.add(task);
-                ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
-                        + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
-                break;
-            case "event":
-                task = new Event(description, dateFormatter.getDateTime());
-                tasks.add(task);
-                ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
-                        + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
-                break;
-            case "deadline":
-                task = new Deadline(description, dateFormatter.getDateTime());
-                tasks.add(task);
-                ui.setMessage(new Duke_Response().ADD + "      " + task.toString()
-                        + "\n    Now you have " + tasks.size() + " tasks in your list.\n");
-                break;
+    public void execute(TaskList tasks, Ui ui, Storage storage){
+        try {
+            Task task;
+            DateFormatter dateFormatter = new DateFormatter(dateTime);
+            switch (taskType.toLowerCase()) {
+                case "todo":
+                    task = new Todo(description);
+                    tasks.add(task);
+                    setResponse(ui, task.toString(), tasks.size());
+                    break;
+                case "event":
+                    checkDateValidity(dateFormatter);
+                    task = new Event(description, dateTime);
+                    tasks.add(task);
+                    setResponse(ui, task.toString(), tasks.size());
+                    break;
+                case "deadline":
+                    checkDateValidity(dateFormatter);
+                    task = new Deadline(description, dateTime);
+                    tasks.add(task);
+                    setResponse(ui, task.toString(), tasks.size());
+                    break;
+            }
+        }catch (DukeInvalidDateException e){
+            ui.setMessage(e.getMessage());
         }
+    }
+
+    private void checkDateValidity(DateFormatter dateFormatter) throws DukeInvalidDateException{
+        if(!dateFormatter.isValidDateTime())
+            throw new DukeInvalidDateException();
+    }
+
+    private void setResponse(Ui ui, String response, int size){
+        ui.setMessage(new Duke_Response().ADD + response
+                + "\nNow you have " + size + " tasks in your list.\n");
     }
 }
