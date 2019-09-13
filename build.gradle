@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-group 'seedu.duke'
+group 'duke'
 version '0.1.0'
 
 repositories {
@@ -12,5 +12,9 @@ repositories {
 
 application {
     // Change this to your main class.
-    mainClassName = "seedu.duke.Duke"
+    mainClassName = "Duke"
+}
+
+run {
+    standardInput = System.in
 }
